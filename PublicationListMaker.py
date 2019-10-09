@@ -39,7 +39,7 @@ for article in articles :
     if article.first_author[0:len(Surname)] == Surname : 
         NcitesFirstAuthor += article.citation_count
 
-
+# Text before publication list
 Header = "\\documentclass{resume}\n" + \
     "\\usepackage[left=0.75in,top=0.8in,right=0.75in,bottom=1in]{geometry} \n" + \
     "\\name{\\vspace{-1.5mm}Publication List - Paul McMillan}\n" +\
@@ -48,6 +48,8 @@ Header = "\\documentclass{resume}\n" + \
 Header +=  "%d citations as first author }" % NcitesFirstAuthor
 
 Header += "\n\n\n\\begin{document}\n\n\\begin{enumerate}\n"
+
+# end text
 Footer = "\\end{enumerate}\n\n\\end{document}\n"
 
 filename = Surname + '_PublicationList.tex'
@@ -57,6 +59,7 @@ fileout = open(filename,'w')
 fileout.write(Header)
 
 for article in articles :
+    # enumerated list
     fileout.write ('\\item ``' + unicode_to_latex(article.title[0])+'\'\', ')
     if len(article.author) ==1 :
         fileout.write ( unicode_to_latex(article.author_norm[0]) + '. ')
