@@ -1,7 +1,7 @@
 
 import os
 import sys 
-import pylatexenc.latexencode
+from pylatexenc.latexencode import unicode_to_latex
 import ads
 import subprocess
 
@@ -26,9 +26,10 @@ articles = list(ads.SearchQuery(
 
 # Remove articles I don't really want in there
 for i,article in enumerate(articles) :
-    Journal = pylatexenc.latexencode.unicode_to_latex(article.bibstem[0])
+    Journal = unicode_to_latex(article.bibstem[0])
     if ( Journal == 'EAS') | (Journal == 'EPJWC') : 
         del articles[i]
+
         
 # Count citations
 Ncites = 0
@@ -43,8 +44,8 @@ Header = "\\documentclass{resume}\n" + \
     "\\usepackage[left=0.75in,top=0.8in,right=0.75in,bottom=1in]{geometry} \n" + \
     "\\name{\\vspace{-1.5mm}Publication List - Paul McMillan}\n" +\
     "\\address{Lund Observatory \\\\ paul@astro.lu.se}\n" +\
-    "\\address{%d total citations \\\\ " % Ncites
-    "%d citations as first author }" % NcitesFirstAuthor
+    "\\address{%d total citations \\\\ " % Ncites 
+Header +=  "%d citations as first author }" % NcitesFirstAuthor
 
 Header += "\n\n\n\\begin{document}\n\n\\begin{enumerate}\n"
 Footer = "\\end{enumerate}\n\n\\end{document}\n"
@@ -56,25 +57,25 @@ fileout = open(filename,'w')
 fileout.write(Header)
 
 for article in articles :
-    fileout.write ('\\item ``' + pylatexenc.latexencode.unicode_to_latex(article.title[0])+'\'\', ')
-    if article.author_count ==1 :
-        fileout.write ( pylatexenc.latexencode.unicode_to_latex(article.author_norm[0]) + '. ')
-    elif article.author_count <=4 :
+    fileout.write ('\\item ``' + unicode_to_latex(article.title[0])+'\'\', ')
+    if len(article.author) ==1 :
+        fileout.write ( unicode_to_latex(article.author_norm[0]) + '. ')
+    elif len(article.author) <=4 :
         for i in range(len(article.author)-1) :
-            fileout.write ( pylatexenc.latexencode.unicode_to_latex(article.author_norm[i]) +'.')
+            fileout.write ( unicode_to_latex(article.author_norm[i]) +'.')
             if (i<len(article.author)-2): fileout.write(', ')
         fileout.write(' \\& ' +
-                      pylatexenc.latexencode.unicode_to_latex(article.author_norm[len(article.author)-1]) +'. ')
+                      unicode_to_latex(article.author_norm[len(article.author)-1]) +'. ')
     else :
         for i in range(4) :
-            fileout.write(pylatexenc.latexencode.unicode_to_latex(article.author_norm[i]) +'., ')
+            fileout.write(unicode_to_latex(article.author_norm[i]) +'., ')
         fileout.write ('et al. ')
     fileout.write ('('+ article.year + '), ' + \
-            pylatexenc.latexencode.unicode_to_latex(article.bibstem[0])+', ' + str(article.volume) \
+            unicode_to_latex(article.bibstem[0])+', ' + str(article.volume) \
             +', ' + article.page[0] +'. (Citations to date ' + str(article.citation_count) +')\n\n')
-    #fileout.write ('')
-    #fileout.write ,,article.citation_count,'\n'
+ 
 fileout.write(Footer)
+
 
 fileout.close()
 
