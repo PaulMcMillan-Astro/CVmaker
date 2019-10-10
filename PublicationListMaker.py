@@ -12,8 +12,10 @@ filename = Surname + '_PublicationList.tex'
 
 
 def AuthorNameAbbreviation(author) :
+    '''Give author name in LaTeX with format: Surname, FirstInitial.'''
     # Convert to Latex
     fullname = unicode_to_latex(author)
+    # Replace first names with first initial
     commaplace = fullname.find(',')
     if commaplace >=0 :
         if(fullname[:commaplace] == Surname) :
@@ -25,6 +27,7 @@ def AuthorNameAbbreviation(author) :
         
 
 def JournalVolumePage(article) :
+    '''Give journal, volume, page as string (coping with arXiv or in press)'''
     if unicode_to_latex(article.bibstem[0]) == 'arXiv' :
         return article.page[0]
     elif article.volume is None :
@@ -63,7 +66,7 @@ for article in articles :
     if article.first_author[0:len(Surname)] == Surname : 
         NcitesFirstAuthor += article.citation_count
 
-# Text before publication list
+# Text that comes before publication list
 Header = "\\documentclass{resume}\n" + \
     "\\usepackage[left=0.75in,top=0.8in,right=0.75in,bottom=1in]{geometry} \n" + \
     "\\name{\\vspace{-1.5mm}Publication List - Paul McMillan}\n" +\
@@ -107,8 +110,7 @@ for article in articles :
     else :
         fileout.write ('\n\n')
 fileout.write(Footer)
-
-
 fileout.close()
 
+# Convert to pdf
 subprocess.call(["pdflatex", filename])
