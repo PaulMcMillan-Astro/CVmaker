@@ -8,8 +8,13 @@ import subprocess
 
 FullName = 'Paul McMillan'
 Surname = 'McMillan'
+AuthorName = '\\textbf{McMillan P.}'
 filename = Surname + '_PublicationList.tex'
 
+def SurnameofListmaker(author) :
+    '''Check if author is the one we're making the list for.'''
+    fullname = unicode_to_latex(author)
+    return (fullname[:len(Surname)] == Surname)
 
 def AuthorNameAbbreviation(author) :
     '''Give author name in LaTeX with format: Surname, FirstInitial.'''
@@ -19,7 +24,7 @@ def AuthorNameAbbreviation(author) :
     commaplace = fullname.find(',')
     if commaplace >=0 :
         if(fullname[:commaplace] == Surname) :
-            return '\\textbf{'+ fullname[:commaplace+3] +'.}'
+            return AuthorName
         else :
             return fullname[:commaplace+3] + '.'
     else :
@@ -69,7 +74,7 @@ for article in articles :
 # Text that comes before publication list
 Header = "\\documentclass{resume}\n" + \
     "\\usepackage[left=0.75in,top=0.8in,right=0.75in,bottom=1in]{geometry} \n" + \
-    "\\name{\\vspace{-1.5mm}Publication List - Paul McMillan}\n" +\
+    "\\name{\\vspace{-1.5mm}Publication List - " + FullName + "}\n" +\
     "\\address{Lund Observatory \\\\ paul@astro.lu.se}\n" +\
     "\\address{%d total citations \\\\ " % Ncites 
 Header +=  "%d citations as first author }" % NcitesFirstAuthor
@@ -85,25 +90,31 @@ fileout = open(filename,'w')
 fileout.write(Header)
 
 for article in articles :
-    # enumerated list
+    SurnameFound = False
+
+    # latex for enumerated list
     fileout.write ('\\item ``' + unicode_to_latex(article.title[0])+'\'\', ')
     # Solo papers
     if len(article.author) ==1 :
-        fileout.write ( AuthorNameAbbreviation(article.author[0]) + ' ')
-    # Short author lists
+        fileout.write ( AuthorNameAbbreviation(article.author[0]) + ' (')
+    # Short (N<4) author lists
     elif len(article.author) <=4 :
         for i in range(len(article.author)-1) :
             fileout.write ( AuthorNameAbbreviation(article.author[i]) )
             if (i<len(article.author)-2): fileout.write(', ')
         fileout.write(' \\& ' +
-                      AuthorNameAbbreviation(article.author[len(article.author)-1]) +' ')
+                      AuthorNameAbbreviation(article.author[len(article.author)-1]) +' (')
     else :
     # Long author lists
         for i in range(4) :
             fileout.write(AuthorNameAbbreviation(article.author[i]) +', ')
-        fileout.write ('et al. ')
+            if SurnameofListmaker(article.author[i]) : SurnameFound = True
+        if SurnameFound :
+            fileout.write ('et al. (')
+        else :
+            fileout.write ('et al. (including ' + AuthorName + ', ')
 
-    fileout.write ('('+ article.year + '), ' + JournalVolumePage(article) + '.')
+    fileout.write (article.year + '), ' + JournalVolumePage(article) + '.')
     # Citations?
     if article.citation_count > 0 :
         fileout.write (' (Citations to date ' + str(article.citation_count) +'.)\n\n')
