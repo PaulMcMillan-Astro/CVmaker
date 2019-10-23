@@ -10,6 +10,9 @@ FullName = 'Paul McMillan'
 Surname = 'McMillan'
 AuthorName = '\\textbf{Paul J. McMillan}'
 filename = Surname + '_PublicationList.tex'
+separateKeyPublications = False
+nArticlesMax = 200
+
 
 def SurnameofListmaker(author) :
     '''Boolian. True if author is the one we're making the list for.'''
@@ -41,60 +44,8 @@ def JournalVolumePage(article) :
         return unicode_to_latex(article.bibstem[0])+', ' + str(article.volume) \
             +', ' + article.page[0]
 
-
-
-# My ORCID. Replace with your own if you so desire
-ORCID = '0000-0002-8861-2620'
-
-
-articles = list(ads.SearchQuery(
-        q='(orcid:'+ ORCID +')'\
-          'database:astronomy',rows=200,
-        fl=['id', 'first_author','author', 
-            'author_norm', 'year', 'title','citation_count', 'volume','bibstem',
-            'page','identifier'],
-        sort='date'))
-
-
-
-# Remove articles I don't really want in there
-for i,article in enumerate(articles) :
-    Journal = unicode_to_latex(article.bibstem[0])
-    if ( Journal == 'EAS') | (Journal == 'EPJWC') : 
-        del articles[i]
-
-        
-# Count citations
-Ncites = 0
-NcitesFirstAuthor = 0
-for article in articles :
-    print(article.title,article.citation_count)
-    if article.citation_count is not None :
-        Ncites += article.citation_count
-        if article.first_author[0:len(Surname)] == Surname : 
-            NcitesFirstAuthor += article.citation_count
-
-# Text that comes before publication list
-Header = "\\documentclass{resume}\n" + \
-    "\\usepackage[left=0.75in,top=0.8in,right=0.75in,bottom=1in]{geometry} \n" + \
-    "\\name{\\vspace{-1.5mm}Publication List - " + FullName + "}\n" +\
-    "\\address{Lund Observatory \\\\ paul@astro.lu.se}\n" +\
-    "\\address{%d total citations \\\\ " % Ncites 
-Header +=  "%d citations as first author }" % NcitesFirstAuthor
-
-Header += "\n\n\n\\begin{document}\n\n\\begin{enumerate}\n"
-
-# end text
-Footer = "\\end{enumerate}\n\n\\end{document}\n"
-
-
-fileout = open(filename,'w')
-
-fileout.write(Header)
-
-for article in articles :
+def WriteArticleListing(fileout,article) :
     SurnameFound = False
-
     # latex for enumerated list
     fileout.write ('\\item ``' + unicode_to_latex(article.title[0])+'\'\', ')
     # Solo papers
@@ -124,6 +75,78 @@ for article in articles :
     else :
         fileout.write (' \\textit{(Citations to date ' + str(article.citation_count) +'.)}\n\n')
     
+
+
+
+
+# My ORCID. Replace with your own if you so desire
+ORCID = '0000-0002-8861-2620'
+
+
+articles = list(ads.SearchQuery(
+        q='(orcid:'+ ORCID +')'\
+          'database:astronomy',rows=nArticlesMax,
+        fl=['id', 'first_author','author', 
+            'author_norm', 'year', 'title','citation_count', 'volume','bibstem',
+            'page','identifier'],
+        sort='date'))
+
+if (len(articles) == nArticlesMax) :
+    print('WARNING: Too many articles to parse')
+
+# Remove articles I don't really want in there
+for i,article in enumerate(articles) :
+    Journal = unicode_to_latex(article.bibstem[0])
+    if ( Journal == 'EAS') | (Journal == 'EPJWC') : 
+        del articles[i]
+
+        
+# Count citations
+Ncites = 0
+NcitesFirstAuthor = 0
+for article in articles :
+    #print(article.title,article.citation_count)
+    if article.citation_count is not None :
+        Ncites += article.citation_count
+        if article.first_author[0:len(Surname)] == Surname : 
+            NcitesFirstAuthor += article.citation_count
+
+# Text that comes before publication list
+Header = "\\documentclass{resume}\n" + \
+    "\\usepackage[left=0.75in,top=0.8in,right=0.75in,bottom=1in]{geometry} \n" + \
+    "\\name{\\vspace{-1.5mm}Publication List - " + FullName + "}\n" +\
+    "\\address{Lund Observatory \\\\ paul@astro.lu.se}\n" +\
+    "\\address{%d total citations \\\\ " % Ncites 
+Header +=  "%d citations as first author }" % NcitesFirstAuthor
+
+if separateKeyPublications is True :
+    Header += "\n\n\n\\begin{document}\n\n\\section*{Key Publications}\n\n" \
+            + "\\begin{enumerate}\n"
+else :
+    Header += "\n\n\n\\begin{document}\n\n\\begin{enumerate}\n"
+
+# end text
+Footer = "\\end{enumerate}\n\n\\end{document}\n"
+
+
+fileout = open(filename,'w')
+
+fileout.write(Header)
+
+if separateKeyPublications is True :
+    for i,article in enumerate(articles) :
+        if False :
+            # write article to file
+
+            # Prevent it appearing in final list
+            del articles[i]
+    fileout.write("\\end{enumerate}\\section*{Other Publications}\n\n"
+                  + "\\begin{enumerate}\n")
+
+
+for article in articles :
+    WriteArticleListing(fileout,article)
+
 fileout.write(Footer)
 fileout.close()
 
