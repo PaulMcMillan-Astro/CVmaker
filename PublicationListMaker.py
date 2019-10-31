@@ -27,7 +27,7 @@ KeyPublications = [ '2019MNRAS.487.3568S', # 'Distances and parallax bias in Gai
                     '2008MNRAS.390..429M', #'Disassembling the Galaxy with angle-action coordinates',
                     '2007MNRAS.378..541M', #'Initial conditions for disc galaxies',
                     '2005MNRAS.363.1205M'] #'Halo evolution in the presence of a disc bar'
-nArticlesMax = 200
+nArticlesMax = 2000
 
 
 def SurnameofListmaker(author) :
@@ -120,12 +120,15 @@ for i,article in enumerate(articles) :
 # Count citations
 Ncites = 0
 NcitesFirstAuthor = 0
+print('bibcodes are:')
 for article in articles :
-    #print(article.title,article.citation_count)
+    print(article.title[0],article.bibcode)
     if article.citation_count is not None :
         Ncites += article.citation_count
         if article.first_author[0:len(Surname)] == Surname : 
             NcitesFirstAuthor += article.citation_count
+
+print()
 
 # Text that comes before publication list
 Header = "\\documentclass{resume}\n" + \
@@ -150,9 +153,7 @@ fileout = open(filename,'w')
 fileout.write(Header)
 
 if separateKeyPublications is True :
-    
     for i,article in enumerate(articles) :
-        print(article.title[0], article.bibcode)
         if article.bibcode in KeyPublications :
             # write article to file
             WriteArticleListing(fileout,article)
@@ -161,7 +162,7 @@ if separateKeyPublications is True :
 
 
 for article in articles :
-    if article.bibcode not in KeyPublications :
+    if (separateKeyPublications is False) or (article.bibcode not in KeyPublications) :
         WriteArticleListing(fileout,article)
 
 fileout.write(Footer)
