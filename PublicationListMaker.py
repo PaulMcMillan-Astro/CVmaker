@@ -10,7 +10,23 @@ FullName = 'Paul McMillan'
 Surname = 'McMillan'
 AuthorName = '\\textbf{Paul J. McMillan}'
 filename = Surname + '_PublicationList.tex'
-separateKeyPublications = False
+separateKeyPublications = True
+KeyPublications = [ '2019MNRAS.487.3568S', # 'Distances and parallax bias in Gaia DR2',
+                    '2018A&A...616A..12G', #'Gaia Data Release 2. Kinematics of globular clusters and dwarf galaxies around the Milky Way',
+                    '2018MNRAS.477.5279M', #'Improved distances and ages for stars common to TGAS and RAVE',
+                    '2017MNRAS.467.1154S', #'Understanding inverse metallicity gradients in galactic discs as a consequence of inside-out formation'
+                    '2017MNRAS.465...76M', #'The mass distribution and gravitational potential of the Milky Way',
+                    '2017AJ....153...75K', #'The Radial Velocity Experiment (RAVE): Fifth Data Release',
+                    '2016MNRAS.456.1982B', #'Torus mapper: a code for dynamical models of galaxies',
+                    '2014MNRAS.445.3133P', #"Constraining the Galaxy's dark halo with RAVE stars",
+                    '2013MNRAS.433.1411M', #'Analysing surveys of our Galaxy - II. Determining the potential',
+                    '2013MNRAS.430.3276M', #'Extending the Hyades',
+                    '2011MNRAS.414.2446M', #'Mass models of the Milky Way',
+                    '2011MNRAS.413.1889B', #'Models of our Galaxy - II',
+                    '2010MNRAS.402..934M', #'The uncertainty in Galactic parameters',
+                    '2008MNRAS.390..429M', #'Disassembling the Galaxy with angle-action coordinates',
+                    '2007MNRAS.378..541M', #'Initial conditions for disc galaxies',
+                    '2005MNRAS.363.1205M'] #'Halo evolution in the presence of a disc bar'
 nArticlesMax = 200
 
 
@@ -88,7 +104,7 @@ articles = list(ads.SearchQuery(
           'database:astronomy',rows=nArticlesMax,
         fl=['id', 'first_author','author', 
             'author_norm', 'year', 'title','citation_count', 'volume','bibstem',
-            'page','identifier'],
+            'page','identifier','bibcode'],
         sort='date'))
 
 if (len(articles) == nArticlesMax) :
@@ -134,18 +150,19 @@ fileout = open(filename,'w')
 fileout.write(Header)
 
 if separateKeyPublications is True :
+    
     for i,article in enumerate(articles) :
-        if False :
+        print(article.title[0], article.bibcode)
+        if article.bibcode in KeyPublications :
             # write article to file
-
-            # Prevent it appearing in final list
-            del articles[i]
+            WriteArticleListing(fileout,article)
     fileout.write("\\end{enumerate}\\section*{Other Publications}\n\n"
                   + "\\begin{enumerate}\n")
 
 
 for article in articles :
-    WriteArticleListing(fileout,article)
+    if article.bibcode not in KeyPublications :
+        WriteArticleListing(fileout,article)
 
 fileout.write(Footer)
 fileout.close()
