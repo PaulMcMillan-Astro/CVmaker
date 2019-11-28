@@ -158,7 +158,7 @@ if separateKeyPublications is True :
             # write article to file
             WriteArticleListing(fileout,article)
     fileout.write("\\end{enumerate}\\section*{Other Publications}\n\n"
-                  + "\\begin{enumerate}\n")
+                  + "\\begin{enumerate}\n\\setcounter{enumi}{%d}\n" % len(KeyPublications))
 
 
 for article in articles :
