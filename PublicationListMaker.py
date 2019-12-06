@@ -8,7 +8,7 @@ import subprocess
 
 FullName = 'Paul McMillan'
 Surname = 'McMillan'
-AuthorName = '\\textbf{Paul J. McMillan}'
+AuthorName = '\\textbf{Paul McMillan}'
 filename = Surname + '_PublicationList.tex'
 separateKeyPublications = True
 KeyPublications = [ '2019MNRAS.487.3568S', # 'Distances and parallax bias in Gaia DR2',
