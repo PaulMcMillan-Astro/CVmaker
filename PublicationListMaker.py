@@ -89,7 +89,7 @@ def WriteArticleListing(fileout,article) :
     if (article.citation_count is None) or (article.citation_count == 0) :
         fileout.write ('\n\n')
     else :
-        fileout.write (' \\textit{(Citations to date ' + str(article.citation_count) +'.)}\n\n')
+        fileout.write (' \\textit{(Citations to date ' + str(article.citation_count) +')}\n\n')
     
 
 
