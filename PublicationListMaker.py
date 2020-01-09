@@ -8,6 +8,9 @@ import subprocess
 
 FullName = 'Paul McMillan'
 Surname = 'McMillan'
+# My ORCID. Replace with your own if you so desire
+ORCID = '0000-0002-8861-2620'
+
 AuthorName = '\\textbf{Paul McMillan}'
 filename = Surname + '_PublicationList.tex'
 separateKeyPublications = True
@@ -95,8 +98,6 @@ def WriteArticleListing(fileout,article) :
 
 
 
-# My ORCID. Replace with your own if you so desire
-ORCID = '0000-0002-8861-2620'
 
 
 articles = list(ads.SearchQuery(
