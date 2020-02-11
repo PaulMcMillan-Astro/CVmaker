@@ -14,6 +14,8 @@ ORCID = '0000-0002-8861-2620'
 AuthorName = '\\textbf{Paul McMillan}'
 filename = Surname + '_PublicationList.tex'
 separateKeyPublications = True
+RAVEpreprints = True
+
 KeyPublications = [ '2019MNRAS.487.3568S', # 'Distances and parallax bias in Gaia DR2',
                     '2018A&A...616A..12G', #'Gaia Data Release 2. Kinematics of globular clusters and dwarf galaxies around the Milky Way',
                     '2018MNRAS.477.5279M', #'Improved distances and ages for stars common to TGAS and RAVE',
@@ -145,6 +147,7 @@ if separateKeyPublications is True :
 else :
     Header += "\n\n\n\\begin{document}\n\n\\begin{enumerate}\n"
 
+
 # end text
 Footer = "\\end{enumerate}\n\n\\end{document}\n"
 
@@ -152,16 +155,23 @@ Footer = "\\end{enumerate}\n\n\\end{document}\n"
 fileout = open(filename,'w')
 
 fileout.write(Header)
+if RAVEpreprints is True :
+    fileout.write('\\item ``RAVE DR6 - II.: spectra and radial velocities\'\', Steinmetz, M., Guiglion, G., \\textbf{Paul McMillan}, '
+    + 'Matijevi\\v c, G., et al., 2020, AJ, submitted.\n' )
 
 if separateKeyPublications is True :
     for i,article in enumerate(articles) :
         if article.bibcode in KeyPublications :
             # write article to file
             WriteArticleListing(fileout,article)
+    KeyPublicationNumber = len(KeyPublications)
+    if RAVEpreprints is True : KeyPublicationNumber += 1
     fileout.write("\\end{enumerate}\\section*{Other Publications}\n\n"
-                  + "\\begin{enumerate}\n\\setcounter{enumi}{%d}\n" % len(KeyPublications))
+                  + "\\begin{enumerate}\n\\setcounter{enumi}{%d}\n" % KeyPublicationNumber)
 
-
+if RAVEpreprints is True :
+    fileout.write('\\item ``RAVE DR6 - I.: spectra and radial velocities\'\', Steinmetz, M., Matijevi\\v c, G., Enke, H., '
+     + 'Zwitter, T. et al. (including \\textbf{Paul McMillan}), 2020, AJ, submitted.\n')
 for article in articles :
     if (separateKeyPublications is False) or (article.bibcode not in KeyPublications) :
         WriteArticleListing(fileout,article)
