@@ -156,7 +156,7 @@ fileout = open(filename,'w')
 
 fileout.write(Header)
 if RAVEpreprints is True :
-    fileout.write('\\item ``RAVE DR6 - II.: spectra and radial velocities\'\', Steinmetz, M., Guiglion, G., \\textbf{Paul McMillan}, '
+    fileout.write('\\item ``RAVE DR6 - II.: stellar parameters and abundances\'\', Steinmetz, M., Guiglion, G., \\textbf{Paul McMillan}, '
     + 'Matijevi\\v c, G., et al., 2020, AJ, submitted.\n' )
 
 if separateKeyPublications is True :
