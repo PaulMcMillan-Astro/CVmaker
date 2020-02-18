@@ -157,7 +157,7 @@ fileout = open(filename,'w')
 fileout.write(Header)
 if RAVEpreprints is True :
     fileout.write('\\item ``RAVE DR6 - II.: stellar parameters and abundances\'\', Steinmetz, M., Guiglion, G., \\textbf{Paul McMillan}, '
-    + 'Matijevi\\v c, G., et al., 2020, AJ, submitted.\n' )
+    + 'Matijevi\\v c, G., et al., 2020, AJ, submitted (arXiv:2002.04512).\n' )
 
 if separateKeyPublications is True :
     for i,article in enumerate(articles) :
@@ -171,7 +171,7 @@ if separateKeyPublications is True :
 
 if RAVEpreprints is True :
     fileout.write('\\item ``RAVE DR6 - I.: spectra and radial velocities\'\', Steinmetz, M., Matijevi\\v c, G., Enke, H., '
-     + 'Zwitter, T. et al. (including \\textbf{Paul McMillan}), 2020, AJ, submitted.\n')
+     + 'Zwitter, T. et al. (including \\textbf{Paul McMillan}), 2020, AJ, submitted (arXiv:2002.04377).\n')
 for article in articles :
     if (separateKeyPublications is False) or (article.bibcode not in KeyPublications) :
         WriteArticleListing(fileout,article)
