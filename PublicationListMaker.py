@@ -14,9 +14,10 @@ ORCID = '0000-0002-8861-2620'
 AuthorName = '\\textbf{Paul McMillan}'
 filename = Surname + '_PublicationList.tex'
 separateKeyPublications = True
-RAVEpreprints = True
+additionalPreprints = False
 
-KeyPublications = [ '2019MNRAS.487.3568S', # 'Distances and parallax bias in Gaia DR2',
+KeyPublications = [ '2020arXiv200204512S', # 'The Sixth Data Release of the Radial Velocity Experiment (RAVE) -- II: Stellar Atmospheric Parameters, Chemical Abundances and Distances',
+                    '2019MNRAS.487.3568S', # 'Distances and parallax bias in Gaia DR2',
                     '2018A&A...616A..12G', #'Gaia Data Release 2. Kinematics of globular clusters and dwarf galaxies around the Milky Way',
                     '2018MNRAS.477.5279M', #'Improved distances and ages for stars common to TGAS and RAVE',
                     '2017MNRAS.467.1154S', #'Understanding inverse metallicity gradients in galactic discs as a consequence of inside-out formation'
@@ -155,9 +156,13 @@ Footer = "\\end{enumerate}\n\n\\end{document}\n"
 fileout = open(filename,'w')
 
 fileout.write(Header)
-if RAVEpreprints is True :
-    fileout.write('\\item ``RAVE DR6 - II.: stellar parameters and abundances\'\', Steinmetz, M., Guiglion, G., \\textbf{Paul McMillan}, '
+
+numberofAdditionalKeyPreprints = 0
+if additionalPreprints is True :
+    # Add as many as you like - this is mine
+    fileout.write('\\item ``The Sixth Data Release of the Radial Velocity Experiment (RAVE) -- II: Stellar Atmospheric Parameters, Chemical Abundances and Distances\'\', Steinmetz, M., Guiglion, G., \\textbf{Paul McMillan}, '
     + 'Matijevi\\v c, G., et al., 2020, AJ, submitted (arXiv:2002.04512).\n' )
+    numberofAdditionalKeyPreprints += 1
 
 if separateKeyPublications is True :
     for i,article in enumerate(articles) :
@@ -165,12 +170,12 @@ if separateKeyPublications is True :
             # write article to file
             WriteArticleListing(fileout,article)
     KeyPublicationNumber = len(KeyPublications)
-    if RAVEpreprints is True : KeyPublicationNumber += 1
+    if additionalPreprints is True : KeyPublicationNumber += numberofAdditionalKeyPreprints
     fileout.write("\\end{enumerate}\\section*{Other Publications}\n\n"
                   + "\\begin{enumerate}\n\\setcounter{enumi}{%d}\n" % KeyPublicationNumber)
 
-if RAVEpreprints is True :
-    fileout.write('\\item ``RAVE DR6 - I.: spectra and radial velocities\'\', Steinmetz, M., Matijevi\\v c, G., Enke, H., '
+if additionalPreprints is True :
+    fileout.write('\\item ``The Sixth Data Release of the Radial Velocity Experiment (RAVE) -- I: Survey Description, Spectra and Radial Velocities\'\', Steinmetz, M., Matijevi\\v c, G., Enke, H., '
      + 'Zwitter, T. et al. (including \\textbf{Paul McMillan}), 2020, AJ, submitted (arXiv:2002.04377).\n')
 for article in articles :
     if (separateKeyPublications is False) or (article.bibcode not in KeyPublications) :
