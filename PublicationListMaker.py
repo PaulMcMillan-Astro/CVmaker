@@ -16,7 +16,7 @@ filename = Surname + '_PublicationList.tex'
 separateKeyPublications = True
 additionalPreprints = False
 
-KeyPublications = [ '2020arXiv200204512S', # 'The Sixth Data Release of the Radial Velocity Experiment (RAVE) -- II: Stellar Atmospheric Parameters, Chemical Abundances and Distances',
+KeyPublications = [ '2020AJ....160...83S', # 'The Sixth Data Release of the Radial Velocity Experiment (RAVE) -- II: Stellar Atmospheric Parameters, Chemical Abundances and Distances',
                     '2019MNRAS.487.3568S', # 'Distances and parallax bias in Gaia DR2',
                     '2018A&A...616A..12G', #'Gaia Data Release 2. Kinematics of globular clusters and dwarf galaxies around the Milky Way',
                     '2018MNRAS.477.5279M', #'Improved distances and ages for stars common to TGAS and RAVE',
@@ -67,6 +67,7 @@ def JournalVolumePage(article) :
             +', ' + article.page[0]
 
 def WriteArticleListing(fileout,article) :
+    '''Writes latex ebtry for paper in my preferred format'''
     SurnameFound = False
     # latex for enumerated list
     fileout.write ('\\item ``' + unicode_to_latex(article.title[0])+'\'\', ')
@@ -160,8 +161,8 @@ fileout.write(Header)
 numberofAdditionalKeyPreprints = 0
 if additionalPreprints is True :
     # Add as many as you like - this is mine
-    fileout.write('\\item ``The Sixth Data Release of the Radial Velocity Experiment (RAVE) -- II: Stellar Atmospheric Parameters, Chemical Abundances and Distances\'\', Steinmetz, M., Guiglion, G., \\textbf{Paul McMillan}, '
-    + 'Matijevi\\v c, G., et al., 2020, AJ, submitted (arXiv:2002.04512).\n' )
+    fileout.write('\\item ``Example Paper\'\', Authors et al. including \\textbf{Paul McMillan}, '
+    + ' 2020, AJ, submitted (arXiv:XXX).\n' )
     numberofAdditionalKeyPreprints += 1
 
 if separateKeyPublications is True :
@@ -175,8 +176,7 @@ if separateKeyPublications is True :
                   + "\\begin{enumerate}\n\\setcounter{enumi}{%d}\n" % KeyPublicationNumber)
 
 if additionalPreprints is True :
-    fileout.write('\\item ``The Sixth Data Release of the Radial Velocity Experiment (RAVE) -- I: Survey Description, Spectra and Radial Velocities\'\', Steinmetz, M., Matijevi\\v c, G., Enke, H., '
-     + 'Zwitter, T. et al. (including \\textbf{Paul McMillan}), 2020, AJ, submitted (arXiv:2002.04377).\n')
+    fileout.write('\\item other item \n')
 for article in articles :
     if (separateKeyPublications is False) or (article.bibcode not in KeyPublications) :
         WriteArticleListing(fileout,article)
