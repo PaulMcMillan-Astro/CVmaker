@@ -16,7 +16,9 @@ filename = Surname + '_PublicationList.tex'
 separateKeyPublications = True
 additionalPreprints = False
 
-KeyPublications = [ '2020AJ....160...83S', # 'The Sixth Data Release of the Radial Velocity Experiment (RAVE) -- II: Stellar Atmospheric Parameters, Chemical Abundances and Distances',
+KeyPublications = [ '2021A&A...649A...8G', # Gaia Early Data Release 3: The Galactic anticentre 
+                    '2020MNRAS.495.3295M', # Radial migration and vertical action in N-body simulations 
+                    '2020AJ....160...83S', # 'The Sixth Data Release of the Radial Velocity Experiment (RAVE) -- II: Stellar Atmospheric Parameters, Chemical Abundances and Distances',
                     '2019MNRAS.487.3568S', # 'Distances and parallax bias in Gaia DR2',
                     '2018A&A...616A..12G', #'Gaia Data Release 2. Kinematics of globular clusters and dwarf galaxies around the Milky Way',
                     '2018MNRAS.477.5279M', #'Improved distances and ages for stars common to TGAS and RAVE',
@@ -24,15 +26,13 @@ KeyPublications = [ '2020AJ....160...83S', # 'The Sixth Data Release of the Radi
                     '2017MNRAS.465...76M', #'The mass distribution and gravitational potential of the Milky Way',
                     '2017AJ....153...75K', #'The Radial Velocity Experiment (RAVE): Fifth Data Release',
                     '2016MNRAS.456.1982B', #'Torus mapper: a code for dynamical models of galaxies',
-                    '2014MNRAS.445.3133P', #"Constraining the Galaxy's dark halo with RAVE stars",
+                    #'2014MNRAS.445.3133P', #"Constraining the Galaxy's dark halo with RAVE stars",
                     '2013MNRAS.433.1411M', #'Analysing surveys of our Galaxy - II. Determining the potential',
                     '2013MNRAS.430.3276M', #'Extending the Hyades',
                     '2011MNRAS.414.2446M', #'Mass models of the Milky Way',
                     '2011MNRAS.413.1889B', #'Models of our Galaxy - II',
                     '2010MNRAS.402..934M', #'The uncertainty in Galactic parameters',
-                    '2008MNRAS.390..429M', #'Disassembling the Galaxy with angle-action coordinates',
-                    '2007MNRAS.378..541M', #'Initial conditions for disc galaxies',
-                    '2005MNRAS.363.1205M'] #'Halo evolution in the presence of a disc bar'
+                    '2008MNRAS.390..429M'] #'Disassembling the Galaxy with angle-action coordinates'
 nArticlesMax = 2000
 
 
@@ -83,7 +83,7 @@ def WriteArticleListing(fileout,article) :
                       AuthorNameAbbreviation(article.author[len(article.author)-1]) +', ')
     else :
     # Long author lists
-        for i in range(4) :
+        for i in range(6) :
             fileout.write(AuthorNameAbbreviation(article.author[i]) +', ')
             if SurnameofListmaker(article.author[i]) : SurnameFound = True
         if SurnameFound :
